@@ -12,13 +12,12 @@ import { ScrollTrigger } from "gsap/all";
 export default function Main() {
   const text = useRef(null)
 
-  const titleRef = useRef(null)
-  const lineRef = useRef(null)
+  // const titleRef = useRef(null)
+  // const lineRef = useRef(null)
   const scroller = useRef(null)
 
   gsap.registerPlugin(ScrollTrigger)
 
-  const [position, setposition] = useState(0)
   const [perc, setPerc] = useState(0)
   const [pageHeight, setPageHeight] = useState(0);
 
@@ -66,10 +65,6 @@ export default function Main() {
             end: "bottom center",
             scrub: 4,
             pin: true,
-            // markers: {
-            //   startColor: "yellow",
-            //   endColor: "blue"
-            // },
             toggleActions: "restart none none none"
           }
         }
@@ -127,8 +122,6 @@ export default function Main() {
   const handleScroll = () => {
     const scrollPosition = window.scrollY;
     console.log("Posição do Scroll:", scrollPosition);
-    setposition(scrollPosition)
-
 
 
     if(scrollPosition >= (pageHeight + 31) / 2 && scrollPosition < (pageHeight * 1.5) / 1.2) {
@@ -150,9 +143,6 @@ export default function Main() {
 
   return (
       <Container>
-        <h5>Altura: {pageHeight}</h5>
-        <h5 style={{top: "32px"}}>Position: {position}</h5>
-        <h5 style={{top: "52px"}}>Calc: {(pageHeight * 1.5) / 1.2}</h5>
         <Load />
 
         <Section style={{justifyContent: "center"}}>
