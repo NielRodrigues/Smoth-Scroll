@@ -18,7 +18,28 @@ export default function Main() {
 
   gsap.registerPlugin(ScrollTrigger)
 
+  const [position, setposition] = useState(0)
   const [perc, setPerc] = useState(0)
+  const [pageHeight, setPageHeight] = useState(0);
+
+  useEffect(() => {
+    // Função para atualizar a altura da página
+    function updatePageHeight() {
+      const newPageHeight = window.innerHeight;
+      setPageHeight(newPageHeight);
+    }
+
+    // Adiciona um ouvinte de evento de redimensionamento da janela
+    window.addEventListener('resize', updatePageHeight);
+
+    // Chama a função inicialmente para definir a altura da página
+    updatePageHeight();
+
+    // Remove o ouvinte de evento quando o componente é desmontado
+    return () => {
+      window.removeEventListener('resize', updatePageHeight);
+    };
+  }, []);
 
   useEffect(() => {
     gsap.fromTo(
@@ -45,6 +66,10 @@ export default function Main() {
             end: "bottom center",
             scrub: 4,
             pin: true,
+            // markers: {
+            //   startColor: "yellow",
+            //   endColor: "blue"
+            // },
             toggleActions: "restart none none none"
           }
         }
@@ -55,52 +80,60 @@ export default function Main() {
   }, [])
 
   useEffect(() => {
-    let title = gsap.context(() => {
-      gsap.to(titleRef.current,
-        {
-          ease: "ease-in",
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: "155vh center",
-            end: "623vh center",
-            scrub: 4,
-            pin: true,
-            toggleActions: "restart none none none"
-          }
-        }
-      )
-    });
-    return () => title.revert();
+    // let title = gsap.context(() => {
+    //   gsap.to(titleRef.current,
+    //     {
+    //       ease: "ease-in",
+    //       scrollTrigger: {
+    //         trigger: titleRef.current,
+    //         start: "155 center",
+    //         end: "624 center",
+    //         scrub: 4,
+    //         pin: true,
+    //         markers: {
+    //           startColor: "pink",
+    //           endColor: "orange"
+    //         },
+    //         toggleActions: "restart none none none"
+    //       }
+    //     }
+    //   )
+    // });
+    // return () => title.revert();
   }, [])
 
   useEffect(() => {
-    let line = gsap.context(() => {
-      gsap.to(lineRef.current,
-        {
-          x: "-100vw",
-          ease: "linear",
-          duration: 0.1,
-          scrollTrigger: {
-            trigger: lineRef.current,
-            start: "53vh center",
-            end: "521vh center",
-            scrub: 4,
-            pin: true,
-            toggleActions: "restart none none none"
-          }
-        }
-      )
-    });
-    return () => line.revert();
+    // let line = gsap.context(() => {
+    //   gsap.to(lineRef.current,
+    //     {
+    //       x: "-100vw",
+    //       ease: "linear",
+    //       duration: 0.1,
+    //       scrollTrigger: {
+    //         trigger: lineRef.current,
+    //         start: "54vh center",
+    //         end: "522 center",
+    //         scrub: 4,
+    //         pin: true,
+    //         markers: true,
+    //         toggleActions: "restart none none none"
+    //       }
+    //     }
+    //   )
+    // });
+    // return () => line.revert();
   }, [])
 
   const handleScroll = () => {
     const scrollPosition = window.scrollY;
     console.log("Posição do Scroll:", scrollPosition);
+    setposition(scrollPosition)
 
-    if(scrollPosition >= 495 && scrollPosition < 963) {
-      setPerc((scrollPosition - 495) * 100 / (963 - 495))
-    } else if(scrollPosition >= 963 ){
+
+
+    if(scrollPosition >= (pageHeight + 31) / 2 && scrollPosition < (pageHeight * 1.5) / 1.2) {
+      setPerc(((scrollPosition - (pageHeight + 31) / 2) * 100) / (((pageHeight * 1.5) / 1.2) - ((pageHeight + 31) / 2)))
+    } else if(scrollPosition >= (pageHeight * 1.5) / 1.2 ){
       setPerc(100)
     } else{
       setPerc(0)
@@ -117,6 +150,9 @@ export default function Main() {
 
   return (
       <Container>
+        <h5>Altura: {pageHeight}</h5>
+        <h5 style={{top: "32px"}}>Position: {position}</h5>
+        <h5 style={{top: "52px"}}>Calc: {(pageHeight * 1.5) / 1.2}</h5>
         <Load />
 
         <Section style={{justifyContent: "center"}}>
@@ -124,15 +160,21 @@ export default function Main() {
         </Section>
 
         <Section style={{ alignItems: "flex-start", height: "150vh", flexDirection: "column"}} >
-          <h1 ref={titleRef} className="title">Trilha empresarial NWB</h1>
-          <div className="line" ref={lineRef}>
+          { /* <h1 ref={titleRef} className="title">Trilha empresarial NWB</h1> */ }
+          {/* {<div className="line" ref={lineRef}>
             <div className="before" style={{width: `${perc}%`}} />
             <div className={perc > 0 ? "square marked" : "square"} />
             <div className={perc >= 13 ? "ball marked" : "ball"} />
             <div className={perc >= 66 ? "ball marked" : "ball"} style={{left: "125vw"}} />
             <div className={perc >= 100 ? "end marked" : "end"} />
-          </div>
+          </div>} */}
           <Scroller ref={scroller}>
+            <div className="line-marked" style={{width: `${perc}%`}} />
+            <div className={perc > 0 ? "square marked" : "square"} />
+            <div className={perc >= 13 ? "ball marked" : "ball"} />
+            <div className={perc >= 66 ? "ball marked" : "ball"} style={{left: "130vw"}} />
+            <div className={perc >= 100 ? "end marked" : "end"} />
+
             <div className="panel">
               <div className="text" style={{marginLeft: "15vw"}}>
                 <h4>Ano 0</h4>

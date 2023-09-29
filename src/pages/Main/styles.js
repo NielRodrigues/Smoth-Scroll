@@ -74,7 +74,7 @@ export const Section = styled.section`
     margin-bottom: 8vh;
     margin-left: 5vw;
     margin-right: 5vw;
-    display: flex;
+    display: none;
     flex-direction: row;
     align-items: center;
     position: relative;
@@ -189,7 +189,79 @@ export const Scroller = styled.div`
   flex-direction: row;
   position: relative;
 
+  &::before{
+    content: '';
+    width: 190vw;
+    height: 1px;
+    background-color: #BCBCBC;
+    position: absolute;
+    top: -32px;
+    left: 5vw;
+  }
+
+  div.square{
+    height: 12px;
+    width: 12px;
+    position: absolute;
+    background-color: white;
+    left: 5vw;
+    top: calc(-32px - 6px);
+
+    &.marked{
+      background-color: #2950ff;
+    }
+  }
+
+  div.ball{
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: white;
+    left: 30vw;
+    top: calc(-32px - 6px);
+
+    &.marked{
+      background-color: #2950ff;
+    }
+  }
+
+  div.end{
+    height: 18px;
+    width: 1px;
+    position: absolute;
+    background-color: white;
+    right: 5vw;
+    top: calc(-32px - 9px);
+
+    &.marked{
+      background-color: #2950ff;
+    }
+  }
+
+  div.line-marked{
+    height: 1px;
+    width: 48%;
+    max-width: 190vw;
+    border-radius: 50%;
+    position: absolute;
+    background-color: #2950ff;
+    left: 5vw;
+    top: -32px;
+  }
+
+  &::after{
+    content: 'Trilha empresarial NWB';
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0;
+    position: absolute;
+    top: -104px;
+    left: 5vw;
+  }
+
   div.panel{
+    position: relative;
     height: 100%;
     width: 100%;
     border-radius: 20px;
@@ -197,6 +269,7 @@ export const Scroller = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
 
     div.text{
       display: flex;
